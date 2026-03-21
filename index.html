@@ -154,17 +154,17 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #f37021;
-      color: white;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 700;
-      padding: 12px 18px;
+      padding: 10px 18px;
       border-radius: 10px;
-      transition: background 0.15s;
-      box-shadow: 0 2px 6px rgba(243,112,33,0.35);
+      transition: background 0.15s, color 0.15s;
     }
-    .mobile-drawer-slides:hover { background: #d95e10; }
+    .mobile-drawer-slides:hover { background: var(--primary); color: white; }
 
     /* レイアウト */
     .layout {
