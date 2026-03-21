@@ -30,14 +30,140 @@
     header {
       background: var(--primary);
       color: white;
-      padding: 20px 32px;
+      padding: 14px 24px;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 200;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    header h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.02em; }
-    header p { font-size: 0.85rem; opacity: 0.85; margin-top: 2px; }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-text h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.02em; }
+    .header-text p  { font-size: 0.85rem; opacity: 0.85; margin-top: 2px; }
+
+    /* 説明スライドボタン */
+    .slides-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .slides-btn:hover { background: rgba(255,255,255,0.3); }
+
+    /* ハンバーガーボタン（モバイルのみ表示） */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* モバイルドロワー */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 150;
+    }
+    .mobile-overlay.open { display: block; }
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100%;
+      background: white;
+      z-index: 160;
+      transform: translateX(-100%);
+      transition: transform 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-top: 0;
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer-header {
+      background: var(--primary);
+      color: white;
+      padding: 20px 20px 16px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .mobile-drawer-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 20px 20px 8px;
+      text-transform: uppercase;
+    }
+    .mobile-drawer a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.92rem;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .mobile-drawer a:hover,
+    .mobile-drawer a.active {
+      background: #e8f0fe;
+      color: var(--primary);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .mobile-drawer-slides {
+      margin: 16px 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: background 0.15s;
+    }
+    .mobile-drawer-slides:hover { background: var(--primary-dark); }
 
     /* レイアウト */
     .layout {
@@ -285,15 +411,38 @@
       nav.sidebar { display: none; }
       main { padding: 20px 16px; }
       .result-grid { grid-template-columns: 1fr; }
+      .hamburger { display: flex; }
+      .slides-btn { display: none; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>奈良AT協会 ─ 運営効率化の取り組み</h1>
-  <p>業務改善・システム化プロジェクト まとめ記事集</p>
+  <div class="header-inner">
+    <div class="header-text">
+      <h1>奈良AT協会 ─ 運営効率化の取り組み</h1>
+      <p>業務改善・システム化プロジェクト まとめ記事集</p>
+    </div>
+    <a class="slides-btn" href="slides.html" target="_blank">▶ 説明スライド</a>
+    <button class="hamburger" id="hamburger" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
+
+<!-- モバイルドロワー -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<nav class="mobile-drawer" id="mobileDrawer">
+  <div class="mobile-drawer-header">奈良AT協会</div>
+  <div class="mobile-drawer-label">記事一覧</div>
+  <a href="#" class="active" data-section="overview">📋 道のり：全体の流れ</a>
+  <a href="#" data-section="accounting">💰 会計部門編</a>
+  <a href="#" data-section="tech">⚙️ 会計詳細（技術編）</a>
+  <a href="#" data-section="other">🌟 その他部門編</a>
+  <div class="mobile-drawer-label" style="margin-top:8px;">スライド</div>
+  <a class="mobile-drawer-slides" href="slides.html" target="_blank">▶ 説明スライドを開く</a>
+</nav>
 
 <div class="layout">
 
@@ -621,6 +770,40 @@
     a.addEventListener('click', function(e) {
       e.preventDefault();
       showSection(sections[i], this);
+    });
+  });
+
+  // ハンバーガーメニュー
+  const hamburger   = document.getElementById('hamburger');
+  const drawer      = document.getElementById('mobileDrawer');
+  const overlay     = document.getElementById('mobileOverlay');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    hamburger.classList.add('open');
+  }
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+
+  hamburger.addEventListener('click', () => {
+    drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+  });
+  overlay.addEventListener('click', closeDrawer);
+
+  // ドロワー内の記事リンク
+  document.querySelectorAll('.mobile-drawer a[data-section]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.dataset.section;
+      // ドロワー内アクティブ更新
+      document.querySelectorAll('.mobile-drawer a[data-section]').forEach(x => x.classList.remove('active'));
+      this.classList.add('active');
+      showSection(id, null);
+      closeDrawer();
     });
   });
 </script>
