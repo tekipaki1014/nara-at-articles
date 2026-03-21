@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奈良AT協会 運営効率化の取り組み</title>
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --primary-dark: #1558b0;
+      --accent: #34a853;
+      --bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --text: #202124;
+      --text-muted: #5f6368;
+      --border: #dadce0;
+      --sidebar-width: 260px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* ヘッダー */
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 20px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    header h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.02em; }
+    header p { font-size: 0.85rem; opacity: 0.85; margin-top: 2px; }
+
+    /* レイアウト */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 72px);
+    }
+
+    /* サイドバー */
+    nav.sidebar {
+      width: var(--sidebar-width);
+      background: var(--card-bg);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: sticky;
+      top: 72px;
+      height: calc(100vh - 72px);
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .sidebar-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 0 20px 8px;
+      text-transform: uppercase;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.88rem;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .sidebar a:hover { background: #e8f0fe; color: var(--primary); border-left-color: var(--primary); }
+    .sidebar a.active { background: #e8f0fe; color: var(--primary); border-left-color: var(--primary); font-weight: 600; }
+    .sidebar a .badge {
+      font-size: 0.7rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 10px;
+      padding: 1px 7px;
+      margin-left: auto;
+    }
+
+    /* メインコンテンツ */
+    main {
+      flex: 1;
+      padding: 40px;
+      max-width: 860px;
+    }
+
+    /* 記事セクション */
+    .article-section {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+    .article-section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 記事カードヘッダー */
+    .article-header {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .article-header .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .tag-overview { background: #e8f5e9; color: #2e7d32; }
+    .tag-accounting { background: #e3f2fd; color: #1565c0; }
+    .tag-tech { background: #fce4ec; color: #c62828; }
+    .tag-other { background: #fff3e0; color: #e65100; }
+
+    .article-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .article-header .catchphrase {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 記事本文 */
+    .article-body {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .article-body h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 32px 0 12px;
+      padding-left: 12px;
+      border-left: 4px solid var(--primary);
+    }
+    .article-body h3:first-child { margin-top: 0; }
+
+    .article-body h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 24px 0 8px;
+    }
+
+    .article-body p {
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .article-body ul, .article-body ol {
+      margin: 12px 0 16px 22px;
+    }
+    .article-body li {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+
+    .article-body strong { color: var(--primary-dark); }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    /* 吹き出し・ポイントボックス */
+    .box-tip {
+      background: #e8f0fe;
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    .box-tip .box-title { font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+
+    .box-warn {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    .box-warn .box-title { font-weight: 700; color: #e65100; margin-bottom: 6px; }
+
+    /* 引用・リンクブロック */
+    .link-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1f3f4;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .link-block:hover { background: #e8f0fe; }
+    .link-block .icon { font-size: 1.1rem; }
+    .link-block a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .link-block a:hover { text-decoration: underline; }
+
+    /* コードブロック */
+    code {
+      background: #f1f3f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.88em;
+      color: #c62828;
+    }
+
+    /* 成果リスト */
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+    @media (max-width: 640px) { .result-grid { grid-template-columns: 1fr; } }
+
+    .result-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+    }
+    .result-card .result-icon { font-size: 1.4rem; margin-bottom: 8px; }
+    .result-card h5 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .result-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+    /* ステップ番号付きリスト */
+    .step-list { list-style: none; margin: 16px 0; padding: 0; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      min-width: 28px;
+      height: 28px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 768px) {
+      nav.sidebar { display: none; }
+      main { padding: 20px 16px; }
+      .result-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>奈良AT協会 ─ 運営効率化の取り組み</h1>
+  <p>業務改善・システム化プロジェクト まとめ記事集</p>
+</header>
+
+<div class="layout">
+
+  <!-- サイドバー -->
+  <nav class="sidebar">
+    <div class="sidebar-label">記事一覧</div>
+    <a href="#" class="active" onclick="showSection('overview', this)">
+      📋 道のり：全体の流れ
+    </a>
+    <a href="#" onclick="showSection('accounting', this)">
+      💰 会計部門編
+    </a>
+    <a href="#" onclick="showSection('tech', this)">
+      ⚙️ 会計詳細（技術編）
+    </a>
+    <a href="#" onclick="showSection('other', this)">
+      🌟 その他部門編
+    </a>
+  </nav>
+
+  <!-- メインコンテンツ -->
+  <main>
+
+    <!-- 記事1：道のり -->
+    <section id="overview" class="article-section active">
+      <div class="article-header">
+        <span class="tag tag-overview">全体概要</span>
+        <h2>奈良AT協会・運営効率化の道のり</h2>
+        <p class="catchphrase">「なんとかして」から始まった仕組みづくり</p>
+      </div>
+      <div class="article-body">
+        <p>今回は、私たちがこれまでどのようにして「協会運営の業務効率化」を進めてきたのか、その全体像やきっかけについてお話しします。</p>
+        <p>「今のやり方、ちょっとしんどいな…」と感じているスポーツ協会やチームの事務局の方に、少しでも参考になれば嬉しいです！</p>
+
+        <h3>始まりは「なんとかして」から</h3>
+        <p>私が協会に本格的に関わり始めたのは、約2年前。最初はあくまで一スタッフとして現場に入りながら、自分の得意分野だったExcelなどで「ここはこうしたら便利ですよ」と少しずつ修正やアドバイスをするような関わり方でした。</p>
+        <p>しかし、活動を続けるうちに徐々に協会の全体の流れが見えてきました。また、自分自身もAIの進化などをキャッチアップしていく中で、「もしかして、もっと色々なことができるのでは？」と感じるようになっていたんです。</p>
+        <p>そんなある日、代表の和田さんからこんな相談を受けました。<br><strong>「この会計システム、なんとかならへんかな…？」</strong></p>
+        <p>それが、本格的な「仕組みづくり」のスタート地点でした。</p>
+
+        <h3>当時の協会の課題</h3>
+        <ul>
+          <li><strong>スタッフ数の増加</strong>による管理の複雑化</li>
+          <li><strong>担当する競技団体や、現場への派遣回数の増加</strong></li>
+          <li>結果として、<strong>「全体像を把握し、正確に会計処理を行うこと」が非常に困難に</strong>なっていた</li>
+        </ul>
+        <p>当時は、Excelを使ったり、時には紙媒体の書類を使ったりと、管理方法がバラバラ。「誰が・どこに行って・いつお金を支払っているのか」という大事な情報が、あちこちに散らばっている状態だったのです。</p>
+
+        <h3>まずやったこと：現状把握と「一つの場所にまとめる」こと</h3>
+        <p>この状況に対して、私がまず行ったのは「全貌の把握」です。誰が、どんなファイルを使って、どうやって処理しているのか？という業務の流れをすべて確認しました。</p>
+        <p>そして、あちこちに散らばっていた書類やファイルを、<strong>基本的にすべてデジタル化し、Googleが提供している「スプレッドシート」の1つの場所にまとめました。</strong></p>
+        <p>1つの場所にまとまることで、「ファイルが迷子になる」という悩みがなくなり、それを集計したりカテゴリに分けたりすることが驚くほど楽になったんです。</p>
+
+        <div class="link-block">
+          <span class="icon">🔗</span>
+          <span>詳細はこちら：<a href="#" onclick="showSection('accounting', document.querySelector('.sidebar a:nth-child(3)')); return false;">会計部門の業務効率化について →</a></span>
+        </div>
+        <div class="link-block">
+          <span class="icon">🔗</span>
+          <span>詳細はこちら：<a href="#" onclick="showSection('other', document.querySelector('.sidebar a:nth-child(5)')); return false;">その他部門の業務効率化について →</a></span>
+        </div>
+
+        <h3>改善の結果：できるようになったこと</h3>
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-icon">📁</div>
+            <h5>「あのファイルどこ？」から卒業！</h5>
+            <p>情報が一つのスプレッドシートに集約されたおかげで、過去のデータを探し回る時間がゼロになりました。</p>
+          </div>
+          <div class="result-card">
+            <div class="result-icon">⚡</div>
+            <h5>会計の集計と連絡が全自動レベルに！</h5>
+            <p>チェックを入れるだけでスタッフへの振込確認メールが届いたり、カテゴリ別の年間集計が自動で行われたりするため、会計担当の負担が激減しました。</p>
+          </div>
+          <div class="result-card">
+            <div class="result-icon">📊</div>
+            <h5>大規模イベントの現場の声を、サクッと集約！</h5>
+            <p>面倒だったアンケートの作成や集計が自動化され、現場で働くスタッフの意見をすぐに拾い上げ、次回の運営改善に素早く活かせるようになりました。</p>
+          </div>
+          <div class="result-card">
+            <div class="result-icon">📸</div>
+            <h5>手間のかかるSNS発信を楽しく簡単に！</h5>
+            <p>競技団体ごとに違うInstagram用の画像をサクッと作れる仕組みができ、広報活動のハードルがグッと下がりました。</p>
+          </div>
+        </div>
+
+        <h3>今後進めていきたいこと</h3>
+        <p>今の仕組みもまだまだ発展途上です。今後は、この仕組みを「私だけでなく、誰でも簡単に直感的に扱える状態（属人化の解消）」へと引き上げたり、さらに新しいAIの技術なども取り入れながら「より使いやすいシステム」へと進化させていきたいと考えています。</p>
+
+        <h3>おわりに</h3>
+        <p>周りを見渡せば、多くの人がスポーツや選手のために献身的に働いている姿があります。しかし、その熱意の裏で、多くの手間や自己犠牲を払って成立しているのが協会運営の実態でもあります。</p>
+        <p>一つ一つの改善は本当に小さなものかもしれませんが、それが積み重なると大きな効果を生み出します。「面倒くさい探す手間」や「手作業の負担」を少しずつ削減することで、協会に関わるメンバーがもっと前を向いて、本来の活動に全力で進めるようになると思うのです。</p>
+        <p>これまでやってきたことに満足せず、これからも業務効率化を進めながら、協会自体がもっともっと大きく羽ばたいていけるよう、前を向いて進んでいきたいと思います！</p>
+      </div>
+    </section>
+
+    <!-- 記事2：会計部門編 -->
+    <section id="accounting" class="article-section">
+      <div class="article-header">
+        <span class="tag tag-accounting">会計部門</span>
+        <h2>AT協会の会計処理をラクにした一元化と自動化の仕組み</h2>
+        <p class="catchphrase">バラバラの管理から卒業！</p>
+      </div>
+      <div class="article-body">
+        <p><a href="#" onclick="showSection('overview', null); return false;">前回の記事（運営効率化の道のり）</a>でお話しした通り、今回は「バラバラになって破綻しかけていた会計システムをどうやって改善したか」について詳しくお話しします。</p>
+
+        <h3>課題から解決策へ：全部を「一つの場所」へ</h3>
+        <p>スタッフが増え、派遣先が増えたことで、「誰が・いつ・どこで・いくらやりとりしたのか」が把握できなくなっていた問題。</p>
+        <p>まずは全貌を把握した後、あちこちにあったExcelや紙の記録を、<strong>すべてGoogleスプレッドシートの「1つの場所」にまとめました。</strong></p>
+
+        <h4>メリット1：「あのファイル、どこだっけ？」の解消</h4>
+        <p>情報が一つの場所に集まったことで、「ここまで処理したっけ？」「請求書のファイルどこにやったっけ？」というような迷子現象がきれいになくなりました。</p>
+
+        <h4>メリット2：自動チェックと「メール送信」</h4>
+        <p>スプレッドシート上で確認作業を行えるようにし、チェックを入れると<strong>対象のスタッフに「振込確認メール」が自動で送信される仕組み</strong>を追加しました。複数の画面やアプリを行き来することなく、概ね一つのファイル上で作業が完結するようになっています。</p>
+
+        <h4>メリット3：集計が圧倒的にラクに</h4>
+        <p>データが完全に1つの形式・1つの場所に集まっているため、それらを「年間集計」「競技団体別」「スタッフ別」といったカテゴリごとに分類するのが非常に簡単になりました。手間暇かかっていた年間集計も、ボタンひとつで確認できる状態になっています！</p>
+
+        <hr>
+
+        <h3>具体的な会計シートの構成と仕組み</h3>
+        <p>現在の会計システムは、大きく分けて以下の6つの要素・シートで構成されています。</p>
+
+        <h4>1. スタッフ名簿（情報を安全に同期する）</h4>
+        <p>入会登録時のGoogleフォームから、別のスタッフが管理している「スタッフ名簿」を作成しています。会計シート側では、その名簿のデータを <code>IMPORTRANGE</code> という関数を使って呼び出し（同期させ）ています。</p>
+        <div class="box-tip">
+          <div class="box-title">💡 ポイント</div>
+          この関数は一方通行でデータを引っ張ってくるだけなので、会計担当のスタッフが誤って名簿の大元データを削除・編集してしまう心配がなく、安全にほぼリアルタイムな情報だけを扱えます。
+        </div>
+
+        <h4>2. 活動記録（原文を残しつつ転記）</h4>
+        <p>現場での活動ごとに、スタッフがフォームから実施内容を投稿してくれます。投稿された原文はそのまま保持しつつ、それを自動で「会計まとめ」のシートへ転記するようにしています。</p>
+        <p>この自動転記を担っているのが <strong>GAS（Google Apps Script）</strong>というプログラムです。後から万が一こちらで金額の誤りなどを修正することがあっても、スタッフが最初に投稿した元のデータはしっかり残るように工夫しています。</p>
+
+        <h4>3. 会議まとめ</h4>
+        <p>当会では会議費が支給されますが、会議ごとに参加スタッフ全員が個別で入力するのは大変ですし、入力漏れが起きる原因になります。そこで、会議の主催者が一度にまとめて「誰が参加したか」を入力すれば完了する仕組みにしました。</p>
+
+        <h4>4. 会計まとめ（SPILL機能と自動エラーチェック）</h4>
+        <p>上で集まった「活動記録」や「会議まとめ」のデータを一覧表示し、スタッフ名簿からのデータと紐づけて、会員番号や銀行口座情報を自動で表示させます。</p>
+        <div class="box-tip">
+          <div class="box-title">💡 ポイント：スピル（SPILL）機能</div>
+          セル一つ一つに数式を入れるのではなく、一つ数式を書けば表全体にバシッと反映されます。「行を削除したら数式が消えて壊れちゃった…」というような"Excelあるある"を防ぐことができます！
+        </div>
+        <p>会計スタッフがこの画面を目視で確認し、問題がなければ「入金済み」のチェックボックスを付けます。また、特定の処理に対して同じスタッフから同じ日の申請が重複していないかなどを数式で自動チェックし、エラーを教えてくれる機能も入れています。</p>
+
+        <h4>5. 自動メール送信（再びGASの活用）</h4>
+        <p>「会計まとめ」でチェックを付けた瞬間、<strong>GAS</strong>が働きます！チェックが入った行のデータ（相手の氏名、件名、金額など）を基本のメールテンプレートに自動で差し込み、スタッフ名簿から紐づけたアドレス宛にメールを自動送信してくれます。</p>
+
+        <h4>6. 年間まとめ（ピボットテーブルの活用）</h4>
+        <p>処理が終わった項目を集計します。ここはExcelでもおなじみの<strong>ピボットテーブル</strong>という機能を使っています。会計まとめの情報をさっと拾い上げ、スタッフごとの一覧や、競技団体ごとの一覧など、年間の集計を一目で確認できるようにしています。</p>
+
+        <hr>
+
+        <div class="link-block">
+          <span class="icon">🔗</span>
+          <span>さらに詳しく：<a href="#" onclick="showSection('tech', null); return false;">技術的な詳細（GAS・スプレッドシート）はこちら →</a></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 記事3：会計詳細（技術編） -->
+    <section id="tech" class="article-section">
+      <div class="article-header">
+        <span class="tag tag-tech">技術詳細</span>
+        <h2>チェックひとつで自動メール！裏側のプログラム（GAS）を解説</h2>
+        <p class="catchphrase">コピペでAIに聞けば作れる！自動化の裏側</p>
+      </div>
+      <div class="article-body">
+        <p>今回は、<a href="#" onclick="showSection('accounting', null); return false;">【会計部門編】</a>でご紹介した「会計まとめシート」の裏側を詳しく公開していきます。</p>
+        <p>「プログラムなんて書いたことがない…」という方も安心してください。私自身も高度なコードをスラスラ書けるわけではありません。<strong>「AIに手伝ってもらえば、深い知識がなくても作れる！」</strong>ということを、ぜひ知ってもらえればと思います。</p>
+
+        <h3>安全で壊れない！スプレッドシートの数式たち</h3>
+        <p>スプレッドシート（Excel）を使う上で一番怖いのが、「誰かが誤ってデータを消してしまった」「行を追加したらそこだけ数式が反映されていなくて計算がズレた」という事故ですよね。これを防ぐための強力な武器をご紹介します。</p>
+
+        <h4>1. 「絶対に上書きさせない」お守り：IMPORTRANGE関数</h4>
+        <p>奈良AT協会では、別の担当者が入力し管理している大元の「スタッフ名簿」のデータを、会計シート側に表示させて使っています。その時に使うのが <code>IMPORTRANGE</code> （インポートレンジ）という関数です。</p>
+        <p>使い方はこんな感じです：</p>
+        <p><code>=IMPORTRANGE("スプレッドシートのURL", "シート名!範囲")</code></p>
+        <p>この関数は「指定した別のファイルから、一方通行でデータを引っ張ってくるだけ」の機能です。そのため、<strong>会計担当のスタッフが会計シート上で誤って名簿データを削除したり編集したりしても、大元の「スタッフ名簿」のデータは絶対に壊れません。</strong></p>
+        <div class="box-warn">
+          <div class="box-title">⚠️ 注意点</div>
+          初めてこの関数を入力すると、セルにエラー（<code>#REF!</code>）が出ます。セルにカーソルを合わせると「アクセスを許可」という青いボタンが出るので、それをポチッと押すのを忘れないでくださいね。
+        </div>
+
+        <h4>2. 行を消しても壊れない魔法：スピル（SPILL）機能</h4>
+        <p>表の左端に計算式を入れて、下までビーッとコピーした経験はありませんか？あれをやると、途中の行を削除した時にそこから下の数式がズレたり消えたりしてしまいますよね。</p>
+        <p>これを解決するのが、スプレッドシートの<strong>スピル（SPILL）機能</strong>です。これは、一番上のセルに一つ数式を入力するだけで、自動で下まで一気にバシッと結果を反映させてくれる魔法のような機能です。</p>
+
+        <h4>3. 重複エラーを視覚的にあぶり出す仕組み</h4>
+        <p>「同じスタッフから、同じ日の活動申請が2回出ている」といった二重計上を防ぐために、<code>COUNTIFS</code>などの数式を組み合わせて自動でチェックさせています。条件付き書式などと組み合わせることで、「重複している行を赤く塗りつぶす」といった視覚的なエラー通知ができるようになり、目視確認の負担がグッと減りました。</p>
+
+        <hr>
+
+        <h3>いざ自動化へ！初めてのGAS入門</h3>
+        <p>「チェックを入れたら、自動でお知らせメールを送る」「アンケート内容を転記する」といった、さらに高度な自動化を実現する<strong>GAS（Google Apps Script）</strong>のお話です。</p>
+
+        <h4>GAS（ガス）って何？</h4>
+        <p>ざっくりいうと、Google版の「マクロ」のようなものです。Googleアカウントがあれば無料で使えるプログラム環境で、これを使えばスプレッドシートやGmailなどを連携させて自動で動かすことができます。</p>
+
+        <h4>スクリプトはどこに入力するの？</h4>
+        <p>設定場所はとても簡単です。スプレッドシートを開いている状態で、上部のメニューから <strong>「拡張機能」 ＞ 「Apps Script」</strong> をクリックします。すると、真っ白な背景に少しコードが書かれた別画面（エディタ画面）が開きます。ここにプログラム（スクリプト）を入力していきます。</p>
+
+        <h4>プログラムをどうやって実行させるの？（トリガーの設定）</h4>
+        <p>プログラムを書き込んでも、勝手には動いてくれません。「どういうタイミングでそのプログラムを動かすか」を指示してあげる必要があります。</p>
+        <p>エディタ画面の左側に<strong>時計のマーク（トリガーメニュー）</strong>があります。これをクリックして、「スプレッドシートが『編集された時』に動かす」といった設定をします。これにより、「チェックボックスにチェックが入った瞬間」を検知してプログラムを走らせることができるんです。</p>
+
+        <hr>
+
+        <h3>最初の壁：「Googleの承認（認証）」を突破せよ！</h3>
+        <p>GASを初めて触る人が100%つまずくと言っても過言ではないのが、この<strong>「承認（認証）」の壁</strong>です。プログラムを初めて実行しようとすると、次のような怖いメッセージが出ます。</p>
+        <div class="box-warn">
+          <div class="box-title">表示されるメッセージ</div>
+          「Google アカウントへのアクセスをリクエストしています」<br>
+          「このアプリは Google の確認が済んでいません」
+        </div>
+        <p>この画面が出ると「ウイルスかな！？」と思って画面を閉じてしまう方が多いのですが、安心してください。これはGoogleの仕様です。</p>
+
+        <h4>承認画面の進み方</h4>
+        <ol class="step-list">
+          <li><span class="step-num">1</span><span>エラーのようなポップアップが出たら、ご自身のGoogleアカウントを選択します。</span></li>
+          <li><span class="step-num">2</span><span>「このアプリは Google の確認が済んでいません」という画面が出たら、左下の小さな文字 <strong>「詳細」</strong> をクリックします。</span></li>
+          <li><span class="step-num">3</span><span>さらに小さな文字で <strong>「[プロジェクト名]（安全ではないページ）に移動」</strong> と表示されるので、勇気を出してそこをクリックします。</span></li>
+          <li><span class="step-num">4</span><span>最後に「許可」をクリックすれば、プログラムが無事に動き出します！<br>※ 一度許可してしまえば、次からはスムーズに動いてくれますよ。</span></li>
+        </ol>
+
+        <hr>
+
+        <h3>おわりに：AIを味方につけてラクしよう</h3>
+        <p>「関数とかプログラムとか、やっぱり難しそう…」と感じたかもしれません。</p>
+        <p>でも、安心してください。<strong>今の時代、自分で1からプログラムのコードを書かなくても大丈夫です。</strong> AI（ChatGPTやClaudeなど）に「スプレッドシートでチェックボックスにチェックを入れたら、連携先のメールアドレスにこんな文章でメールを送るGASのコードを書いて！」とお願いすれば、すぐに答えを教えてくれます。あとはコピーして貼り付けるだけです。</p>
+        <p>大事なのは、プログラミング自体の知識ではなく、<strong>「何をどう自動化すれば自分たちの仕事がラクになるか？」というアイデア</strong>です。ぜひAIを味方につけて、皆さんの協会やチームの事務作業もスマートに改善していきましょう！</p>
+      </div>
+    </section>
+
+    <!-- 記事4：その他部門編 -->
+    <section id="other" class="article-section">
+      <div class="article-header">
+        <span class="tag tag-other">その他部門</span>
+        <h2>アンケート集計からInstagram投稿まで！協会の業務を楽にするIT活用術</h2>
+        <p class="catchphrase">会計以外の「面倒くさい」も解決！</p>
+      </div>
+      <div class="article-body">
+        <p><a href="#" onclick="showSection('overview', null); return false;">運営効率化の道のり</a>の記事でお話しした「会計処理の改善」に合わせて、私たちは協会運営における他の「面倒くさい作業」もどんどん仕組みで解決してきました。今回は、大きなイベントの運営や日々の広報活動といった「会計以外」の部門で実践してきたことをご紹介します！</p>
+
+        <h3>1. 大規模イベントでの情報共有とアンケートの「超速」作成</h3>
+        <p>大きなイベントになると、スタッフの数も多くなり、現場の情報をスムーズに共有するのが難しくなってきます。そこで、リアルタイムな情報共有のためにスプレッドシートを導入し、「スマホから直接入力するのは難しい！」という声には専用の入力しやすい画面を追加で作ったりして工夫しています。</p>
+        <p>さらに、スタッフからの「アンケートを作るのが面倒くさい…」という声に応えて、AIをフル活用して<strong>「爆速でアンケートを作る仕組み」</strong>を確立しました。</p>
+
+        <h4>AIと相談して「叩き台」を作ってもらう</h4>
+        <p>まずは自分で1からフォームを作らず、生成AI（Geminiなど）に「こんなアンケートの構成を考えて！」と相談します。</p>
+        <p>たとえば、マラソンイベントの振り返りアンケートなら、</p>
+        <div class="box-tip">
+          <div class="box-title">プロンプト例</div>
+          「マラソンイベントのスタッフに対する振り返りアンケートを作りたいです。部署、物品の過不足、各部署間での連携、感想は必ず必要。他に必要な項目があれば提案して」
+        </div>
+        <p>↑こんな感じで大雑把にお願いするだけでOKです。すると、AIが「基本情報」「当日のオペレーション」「連携・コミュニケーション」など、きれいに整理された構成案を作ってくれます。さらに、「部署と役割はひとつの選択肢にして」と返せば、すぐに要件を満たした修正版の構成を出してくれます。</p>
+
+        <h4>コピペするだけ！GoogleフォームのAI作成機能</h4>
+        <p>出来上がった構成をどう設定するかですが、今は手作業で一つ一つポチポチ入力する必要はありません。</p>
+        <p>新しくGoogleフォームを立ち上げると、最初に「Gemini に相談（作成してみましょう）」という入力画面が出てきます。先ほどAIが作ってくれた「修正版の構成案テキスト」を、この画面にそのままコピーして貼り付けて「作成」ボタンを押します。</p>
+        <p>すると、「こんな感じですかね？」と事前に完成イメージのプレビューを提示してくれます。もし修正したい箇所があればここでAIにそのまま伝え、問題がなければ右下の「フォームを作成」をクリックします。</p>
+        <p>たったこれだけで、<strong>数秒後には質問項目や選択肢がすべて綺麗に設定されたアンケートフォームが完成します！</strong></p>
+        <div class="box-tip">
+          <div class="box-title">💡 メリット</div>
+          人間は「内容の検討・確認」のみに集中でき、ポチポチと設定する面倒な作業はすべてAIが肩代わりしてくれます。設定漏れや選択肢の入力ミスも確実に防げます。
+        </div>
+        <p>これによって現場の意見をサクッと集められ、次回の改善にすぐ・楽に活かせるようになっています。</p>
+
+        <hr>
+
+        <h3>2. マスコット着せ替えツール（Gemの活用）</h3>
+        <p>広報活動としてInstagramを活用していますが、SNS運用において「毎回違うキャッチーな画像を書き出す」のは非常に手間がかかりますよね。</p>
+        <p>そこで私たちは、生成AIの機能をカスタマイズできる<strong>「Gem（ジェム）」</strong>を活用して、「奈良AT協会のマスコットキャラクター」を着せ替えられる専用のツールを作ってしまいました！</p>
+
+        <div class="box-tip">
+          <div class="box-title">💡 メリット</div>
+          デザインスキルが全くなくても、サポート先の各競技団体ごとのユニフォームを着せたり、バットなどの道具を持たせたりといった画像を、誰でも正確かつ簡単に生成できます。Gemを使うことで、協会のブランド（統一感）を守りつつバリエーションを量産できるのが最大の強みです。
+        </div>
+
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="result-icon">🏉</div>
+            <h5>各大会ごとの応援投稿</h5>
+            <p>競技に合わせたユニフォーム姿のマスコットをサクッと生成できます。</p>
+          </div>
+          <div class="result-card">
+            <div class="result-icon">💬</div>
+            <h5>特定の競技団体へのリプライ</h5>
+            <p>その競技の雰囲気に合った画像で、より親しみやすい返信ができます。</p>
+          </div>
+        </div>
+
+        <p>「こんな発信ができたらいいな」というアイデアをAIの力で自動化することで、デザインにかける手間を大きく削減しつつ、コンスタントで質の高い情報発信が続けられるようになっています。</p>
+
+        <hr>
+
+        <h3>おわりに</h3>
+        <p>「アンケートの集計」も「SNSの画像作り」も、裏側には誰かの時間と作業がかかっています。ITを使ってこれらの手間を少しずつ減らしていくことで、メンバー全員がもっと気持ちよく活動できるようになっていくと実感しています！</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  function showSection(id, clickedLink) {
+    // すべてのセクションを非表示
+    document.querySelectorAll('.article-section').forEach(s => s.classList.remove('active'));
+    // 対象セクションを表示
+    document.getElementById(id).classList.add('active');
+    // サイドバーのactiveを更新
+    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+    const map = { overview: 0, accounting: 1, tech: 2, other: 3 };
+    const links = document.querySelectorAll('.sidebar a');
+    if (links[map[id]]) links[map[id]].classList.add('active');
+    // ページ上部へスクロール
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+  }
+
+  // サイドバーのクリックイベント
+  document.querySelectorAll('.sidebar a').forEach((a, i) => {
+    const sections = ['overview', 'accounting', 'tech', 'other'];
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      showSection(sections[i], this);
+    });
+  });
+</script>
+
+</body>
+</html>
