@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奈良AT協会の取り組み紹介</title>
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --primary-dark: #1558b0;
+      --accent: #34a853;
+      --bg: #f8f9fa;
+      --text: #202124;
+      --text-muted: #5f6368;
+      --border: #dadce0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+      background: #1a1a2e;
+      color: var(--text);
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* スライドコンテナ */
+    .slideshow {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 48px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* スライド1：タイトル */
+    .slide-1 {
+      background: linear-gradient(135deg, #1a73e8 0%, #1558b0 60%, #0d3b7a 100%);
+      color: white;
+      text-align: center;
+    }
+    .slide-1 .tag {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+    }
+    .slide-1 h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+    .slide-1 .subtitle {
+      font-size: clamp(0.95rem, 2vw, 1.25rem);
+      opacity: 0.85;
+      font-weight: 400;
+    }
+    .slide-1 .logo {
+      margin-top: 48px;
+      font-size: 0.9rem;
+      opacity: 0.65;
+      letter-spacing: 0.1em;
+    }
+
+    /* スライド2：課題 */
+    .slide-2 {
+      background: #ffffff;
+    }
+    .slide-3 { background: var(--bg); }
+    .slide-4 { background: #ffffff; }
+
+    /* 共通ヘッダー */
+    .slide-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .slide-num {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 12px;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .slide-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .slide-title em {
+      color: var(--primary);
+      font-style: normal;
+    }
+
+    /* 課題カード */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 760px;
+      width: 100%;
+    }
+    .problem-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+    }
+    .problem-card .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .problem-card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .problem-arrow {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 1.05rem;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 4px 0;
+    }
+    .problem-result {
+      grid-column: 1 / -1;
+      background: #fce8e6;
+      border: 1px solid #f28b82;
+      border-radius: 12px;
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 1rem;
+      color: #c5221f;
+      font-weight: 600;
+    }
+
+    /* スライド3：取り組みテーブル */
+    .table-wrap {
+      width: 100%;
+      max-width: 820px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    thead th {
+      background: var(--primary);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+    }
+    thead th:first-child { border-radius: 8px 0 0 0; }
+    thead th:last-child  { border-radius: 0 8px 0 0; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td {
+      padding: 14px 16px;
+      vertical-align: top;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    tbody tr:nth-child(even) td { background: #f1f3f4; }
+    .tag-before {
+      display: inline-block;
+      background: #fce8e6;
+      color: #c5221f;
+      font-size: 0.7rem;
+      padding: 1px 8px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .tag-after {
+      display: inline-block;
+      background: #e6f4ea;
+      color: #137333;
+      font-size: 0.7rem;
+      padding: 1px 8px;
+      border-radius: 8px;
+      font-weight: 700;
+      margin-right: 4px;
+    }
+
+    /* スライド4：今後・まとめ */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 780px;
+      width: 100%;
+    }
+    .summary-card {
+      border-radius: 12px;
+      padding: 22px 26px;
+    }
+    .summary-card.green {
+      background: #e6f4ea;
+      border: 1px solid #a8d5b5;
+    }
+    .summary-card.blue {
+      background: #e8f0fe;
+      border: 1px solid #a8c4f5;
+    }
+    .summary-card h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .summary-card.green h3 { color: #137333; }
+    .summary-card.blue h3  { color: var(--primary); }
+    .summary-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .summary-card ul li {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      padding-left: 1.2em;
+      position: relative;
+      color: var(--text);
+    }
+    .summary-card ul li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      font-size: 0.75rem;
+      top: 0.15em;
+    }
+    .summary-card.green ul li::before { color: #34a853; }
+    .summary-card.blue  ul li::before { color: var(--primary); }
+
+    /* スライド5：URL */
+    .slide-5 {
+      background: linear-gradient(135deg, #1a73e8 0%, #1558b0 60%, #0d3b7a 100%);
+      color: white;
+      text-align: center;
+    }
+    .slide-5 h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .slide-5 .lead {
+      font-size: 1rem;
+      opacity: 0.85;
+      margin-bottom: 40px;
+    }
+    .url-box {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 12px;
+      padding: 16px 32px;
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      font-family: 'Consolas', 'Courier New', monospace;
+      letter-spacing: 0.02em;
+      margin-bottom: 36px;
+      word-break: break-all;
+    }
+    /* QRコード（CSS描画の擬似表現 → 実際はQR画像を推奨） */
+    .qr-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .qr-placeholder {
+      width: 160px;
+      height: 160px;
+      background: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .qr-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .qr-label {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    /* ナビゲーション */
+    .nav {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 40px;
+      padding: 10px 20px;
+      z-index: 200;
+    }
+    .nav button {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white;
+      font-size: 1rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .nav button:hover { background: rgba(255,255,255,0.3); }
+    .nav button:disabled { opacity: 0.3; cursor: default; }
+    .nav .counter {
+      color: white;
+      font-size: 0.85rem;
+      min-width: 48px;
+      text-align: center;
+      opacity: 0.85;
+    }
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .dot.active {
+      background: white;
+      transform: scale(1.3);
+    }
+
+    /* キーボードヒント */
+    .key-hint {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 600px) {
+      .slide { padding: 28px 20px; }
+      .problem-grid, .summary-grid { grid-template-columns: 1fr; }
+      .problem-arrow, .problem-result { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="slideshow">
+
+  <!-- スライド1：タイトル -->
+  <div class="slide slide-1 active">
+    <div class="tag">奈良AT協会 ／ 2025</div>
+    <h1>活動が増えても、<br>みんなが動きやすい協会へ</h1>
+    <p class="subtitle">奈良AT協会が進めてきた「仕組みづくり」の紹介</p>
+    <p class="logo">奈良県アスレティックトレーナー協会</p>
+  </div>
+
+  <!-- スライド2：課題 -->
+  <div class="slide slide-2">
+    <div class="slide-header">
+      <div class="slide-num">BACKGROUND</div>
+      <div class="slide-title">活動が活発になるほど、<br><em>事務が追いつかなくなる</em></div>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="label">スタッフ数の増加</div>
+        <p>関わるメンバーが増えるほど、管理の複雑さも比例して増していった</p>
+      </div>
+      <div class="problem-card">
+        <div class="label">派遣先・競技団体の増加</div>
+        <p>担当する団体・現場が増え、情報があちこちに散在するように</p>
+      </div>
+      <div class="problem-arrow">↓ 結果として…</div>
+      <div class="problem-result">
+        「誰が・どこに行って・いくらやりとりしたか」が<br>把握できない状態に
+      </div>
+    </div>
+  </div>
+
+  <!-- スライド3：取り組み -->
+  <div class="slide slide-3">
+    <div class="slide-header">
+      <div class="slide-num">INITIATIVES</div>
+      <div class="slide-title">「散らばった情報」を整理する<br><em>3つの取り組み</em></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>分野</th>
+            <th>Before</th>
+            <th>After</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>会計管理</strong></td>
+            <td><span class="tag-before">課題</span>ファイルが散在・手作業で集計</td>
+            <td><span class="tag-after">改善</span>一元化＋チェックひとつで自動集計・自動メール送信</td>
+          </tr>
+          <tr>
+            <td><strong>イベント運営</strong></td>
+            <td><span class="tag-before">課題</span>アンケート作成に時間と手間</td>
+            <td><span class="tag-after">改善</span>AIで叩き台を作り、数分でフォーム完成</td>
+          </tr>
+          <tr>
+            <td><strong>SNS広報</strong></td>
+            <td><span class="tag-before">課題</span>毎回の画像づくりが負担</td>
+            <td><span class="tag-after">改善</span>AIツールで統一感ある画像を手軽に量産</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- スライド4：今後・まとめ -->
+  <div class="slide slide-4">
+    <div class="slide-header">
+      <div class="slide-num">NEXT STEP</div>
+      <div class="slide-title">小さな改善の積み重ねが、<br><em>大きな余裕</em>を生む</div>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card green">
+        <h3>できるようになったこと</h3>
+        <ul>
+          <li>情報迷子がゼロに</li>
+          <li>会計の集計・連絡がほぼ自動化</li>
+          <li>現場の声をすぐ次の運営に活かせる</li>
+          <li>誰でも統一感ある広報ができる</li>
+        </ul>
+      </div>
+      <div class="summary-card blue">
+        <h3>これから目指すこと</h3>
+        <ul>
+          <li>「誰でも使える」仕組みへの昇華<br><small>（属人化の解消）</small></li>
+          <li>AIの進化を継続的に取り入れる</li>
+          <li>同じ課題を持つ協会のヒントに</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- スライド5：URL -->
+  <div class="slide slide-5">
+    <h2>詳しい内容はこちらで読めます</h2>
+    <p class="lead">各取り組みの背景・具体的な仕組みを記事にまとめています</p>
+    <div class="url-box">
+      https://tekipaki1014.github.io/nara-at-articles/
+    </div>
+    <div class="qr-area">
+      <div class="qr-placeholder">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://tekipaki1014.github.io/nara-at-articles/"
+          alt="QRコード"
+        >
+      </div>
+      <span class="qr-label">スマートフォンで読み取れます</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ナビゲーション -->
+<nav class="nav">
+  <button id="prev" onclick="changeSlide(-1)" disabled>&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <span class="counter" id="counter">1 / 5</span>
+  <button id="next" onclick="changeSlide(1)">&#8594;</button>
+</nav>
+
+<div class="key-hint">← → キーでも操作できます</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const dotsEl = document.getElementById('dots');
+
+  // ドット生成
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    d.style.cursor = 'pointer';
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prev').disabled = current === 0;
+    document.getElementById('next').disabled = current === total - 1;
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < total) goTo(next);
+  }
+
+  // キーボード操作
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+  });
+
+  // タッチ操作
+  let touchX = 0;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+  });
+</script>
+</body>
+</html>
