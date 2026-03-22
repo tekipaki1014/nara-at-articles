@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>奈良AT協会 運営効率化の取り組み</title>
+  <link rel="icon" href="./image/ファビコン_鹿ロゴ.png" type="image/png">
+  <link rel="apple-touch-icon" href="./image/ファビコン_鹿ロゴ.png">
   <style>
     :root {
       --primary: #1a73e8;
@@ -485,6 +487,9 @@
         <p>それが、本格的な「仕組みづくり」のスタート地点でした。</p>
 
         <h3>当時の協会の課題</h3>
+        <figure style="margin: 24px 0;">
+          <img src="./image/図解_現状の課題.jpg" alt="現状の課題と非効率な運用" style="width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        </figure>
         <ul>
           <li><strong>スタッフ数の増加</strong>による管理の複雑化</li>
           <li><strong>担当する競技団体や、現場への派遣回数の増加</strong></li>
@@ -507,6 +512,9 @@
         </div>
 
         <h3>改善の結果：できるようになったこと</h3>
+        <figure style="margin: 24px 0;">
+          <img src="./image/図解_解決後の運用.jpg" alt="解決された運用：自動化と集約による効率化" style="width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        </figure>
         <div class="result-grid">
           <div class="result-card">
             <div class="result-icon">📁</div>
@@ -559,9 +567,18 @@
 
         <h4>メリット2：自動チェックと「メール送信」</h4>
         <p>スプレッドシート上で確認作業を行えるようにし、チェックを入れると<strong>対象のスタッフに「振込確認メール」が自動で送信される仕組み</strong>を追加しました。複数の画面やアプリを行き来することなく、概ね一つのファイル上で作業が完結するようになっています。</p>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/08_会計_振込確認チェック.png" alt="スプレッドシート上の振込確認チェックボックスと自動メール送信の仕組み" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
 
         <h4>メリット3：集計が圧倒的にラクに</h4>
         <p>データが完全に1つの形式・1つの場所に集まっているため、それらを「年間集計」「競技団体別」「スタッフ別」といったカテゴリごとに分類するのが非常に簡単になりました。手間暇かかっていた年間集計も、ボタンひとつで確認できる状態になっています！</p>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/09_会計_カテゴリ別集計表.png" alt="カテゴリ別の年間集計表" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/10_会計_競技団体別集計表.png" alt="競技団体別の年間集計表" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
 
         <hr>
 
@@ -630,6 +647,9 @@
         </div>
 
         <h4>2. 行を消しても壊れない魔法：スピル（SPILL）機能</h4>
+        <figure style="margin: 24px 0;">
+          <img src="./image/12_会計_スピル図解.jpg" alt="スプレッドシートの「スピル」とは？機能の図解" style="width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        </figure>
         <p>表の左端に計算式を入れて、下までビーッとコピーした経験はありませんか？あれをやると、途中の行を削除した時にそこから下の数式がズレたり消えたりしてしまいますよね。</p>
         <p>これを解決するのが、スプレッドシートの<strong>スピル（SPILL）機能</strong>です。これは、一番上のセルに一つ数式を入力するだけで、自動で下まで一気にバシッと結果を反映させてくれる魔法のような機能です。</p>
 
@@ -642,6 +662,9 @@
         <p>「チェックを入れたら、自動でお知らせメールを送る」「アンケート内容を転記する」といった、さらに高度な自動化を実現する<strong>GAS（Google Apps Script）</strong>のお話です。</p>
 
         <h4>GAS（ガス）って何？</h4>
+        <figure style="margin: 24px 0;">
+          <img src="./image/11_会計_GAS図解.jpg" alt="Google Apps Script (GAS) とは？ 何ができるか？" style="width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        </figure>
         <p>ざっくりいうと、Google版の「マクロ」のようなものです。Googleアカウントがあれば無料で使えるプログラム環境で、これを使えばスプレッドシートやGmailなどを連携させて自動で動かすことができます。</p>
 
         <h4>スクリプトはどこに入力するの？</h4>
@@ -660,6 +683,9 @@
           「Google アカウントへのアクセスをリクエストしています」<br>
           「このアプリは Google の確認が済んでいません」
         </div>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/07_GAS承認_警告画面.png" alt="Googleの確認が済んでいないアプリの承認画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
         <p>この画面が出ると「ウイルスかな！？」と思って画面を閉じてしまう方が多いのですが、安心してください。これはGoogleの仕様です。</p>
 
         <h4>承認画面の進み方</h4>
@@ -701,12 +727,25 @@
           「マラソンイベントのスタッフに対する振り返りアンケートを作りたいです。部署、物品の過不足、各部署間での連携、感想は必ず必要。他に必要な項目があれば提案して」
         </div>
         <p>↑こんな感じで大雑把にお願いするだけでOKです。すると、AIが「基本情報」「当日のオペレーション」「連携・コミュニケーション」など、きれいに整理された構成案を作ってくれます。さらに、「部署と役割はひとつの選択肢にして」と返せば、すぐに要件を満たした修正版の構成を出してくれます。</p>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/01_アンケート構成案.png" alt="Geminiによるアンケート構成案の作成画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
 
         <h4>コピペするだけ！GoogleフォームのAI作成機能</h4>
         <p>出来上がった構成をどう設定するかですが、今は手作業で一つ一つポチポチ入力する必要はありません。</p>
-        <p>新しくGoogleフォームを立ち上げると、最初に「Gemini に相談（作成してみましょう）」という入力画面が出てきます。先ほどAIが作ってくれた「修正版の構成案テキスト」を、この画面にそのままコピーして貼り付けて「作成」ボタンを押します。</p>
+        <p>新しくGoogleフォームを立ち上げると、最初に「Gemini に相談（作成してみましょう）」という入力画面が出てきます。</p>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/02_フォームAI入力画面.png" alt="GoogleフォームのAIプロンプト入力画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
+        <p>先ほどAI（Gemini）が作ってくれた「修正版の構成案テキスト」を、この画面にそのままコピーして貼り付けて「作成」ボタンを押します。</p>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/03_フォーム作成プレビュー.png" alt="構成案を貼り付けてプレビューを確認する画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
         <p>すると、「こんな感じですかね？」と事前に完成イメージのプレビューを提示してくれます。もし修正したい箇所があればここでAIにそのまま伝え、問題がなければ右下の「フォームを作成」をクリックします。</p>
         <p>たったこれだけで、<strong>数秒後には質問項目や選択肢がすべて綺麗に設定されたアンケートフォームが完成します！</strong></p>
+        <figure style="margin: 24px 0; text-align: center;">
+          <img src="./image/04_フォーム完成画面.png" alt="数秒で完成したGoogleフォームの画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+        </figure>
         <div class="box-tip">
           <div class="box-title">💡 メリット</div>
           人間は「内容の検討・確認」のみに集中でき、ポチポチと設定する面倒な作業はすべてAIが肩代わりしてくれます。設定漏れや選択肢の入力ミスも確実に防げます。
@@ -718,6 +757,14 @@
         <h3>2. マスコット着せ替えツール（Gemの活用）</h3>
         <p>広報活動としてInstagramを活用していますが、SNS運用において「毎回違うキャッチーな画像を書き出す」のは非常に手間がかかりますよね。</p>
         <p>そこで私たちは、生成AIの機能をカスタマイズできる<strong>「Gem（ジェム）」</strong>を活用して、「奈良AT協会のマスコットキャラクター」を着せ替えられる専用のツールを作ってしまいました！</p>
+        <div style="display: flex; gap: 16px; margin: 24px 0; flex-wrap: wrap;">
+          <figure style="margin: 0; flex: 1; min-width: 280px; text-align: center;">
+            <img src="./image/05_マスコット着せ替え_ラグビー.png" alt="ラグビーの着せ替えを行っているGemの画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+          </figure>
+          <figure style="margin: 0; flex: 1; min-width: 280px; text-align: center;">
+            <img src="./image/06_マスコット着せ替え_バドミントン.png" alt="バドミントンの着せ替えを行っているGemの画面" style="max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px;">
+          </figure>
+        </div>
 
         <div class="box-tip">
           <div class="box-title">💡 メリット</div>
