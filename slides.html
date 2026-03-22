@@ -97,6 +97,11 @@
       letter-spacing: 0.1em;
     }
 
+    /* スライド2（新規）：導入図解 */
+    .slide-intro {
+      background: #f8f9fa;
+    }
+
     /* スライド2：課題 */
     .slide-2 {
       background: #ffffff;
@@ -511,7 +516,15 @@
       <p class="logo">奈良県アスレティックトレーナー協会</p>
     </div>
 
-    <!-- スライド2：課題 -->
+    <!-- スライド2：導入（新規） -->
+    <div class="slide slide-intro">
+      <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+        <img src="./image/org_management_hint.jpg" alt="組織管理の仕組みは、活動のヒントになる！"
+          style="max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      </div>
+    </div>
+
+    <!-- スライド3：課題 -->
     <div class="slide slide-2">
       <div class="slide-header">
         <div class="slide-num">BACKGROUND</div>
@@ -537,7 +550,6 @@
     <div class="slide slide-3">
       <div class="slide-header" style="margin-bottom: 24px;">
         <div class="slide-num">CURRENT ISSUES</div>
-        <div class="slide-title"><em>現状の課題と非効率な運用</em></div>
       </div>
       <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
         <img src="./image/図解_現状の課題.jpg" alt="課題の図解"
@@ -585,7 +597,6 @@
     <div class="slide slide-5">
       <div class="slide-header" style="margin-bottom: 24px;">
         <div class="slide-num">SOLUTION</div>
-        <div class="slide-title">自動化と集約による<em>効率化</em></div>
       </div>
       <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
         <img src="./image/図解_解決後の運用.jpg" alt="解決の図解"
@@ -625,11 +636,20 @@
       <h2>詳しい内容はこちらで読めます</h2>
       <p class="lead">各取り組みの背景・具体的な仕組みを記事にまとめています</p>
 
-      <div class="qr-area">
-        <div class="qr-placeholder">
-          <img src="./image/QRコード_スライド用.png" alt="QRコード">
+      <div style="display: flex; gap: 48px; justify-content: center; align-items: flex-start;">
+        <div class="qr-area">
+          <div class="qr-placeholder">
+            <img src="./image/QRコード_スライド用.png" alt="QRコード">
+          </div>
+          <span class="qr-label">詳しい内容を読む（Web記事）</span>
         </div>
-        <span class="qr-label">スマートフォンで読み取れます</span>
+
+        <div class="qr-area">
+          <div class="qr-placeholder">
+            <img src="./image/instagram_qr.jpg" alt="Instagramアカウント">
+          </div>
+          <div class="qr-label" style="text-align: center;">公式Instagram<br>@NARA.AT.ASSOC</div>
+        </div>
       </div>
     </div>
 
@@ -639,7 +659,7 @@
   <nav class="nav">
     <button id="prev" onclick="changeSlide(-1)" disabled>&#8592;</button>
     <div class="dots" id="dots"></div>
-    <span class="counter" id="counter">1 / 7</span>
+    <span class="counter" id="counter">1 / 8</span>
     <button id="next" onclick="changeSlide(1)">&#8594;</button>
   </nav>
 
